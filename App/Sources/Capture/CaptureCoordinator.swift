@@ -178,7 +178,8 @@ final class CaptureCoordinator {
             oldest.slideOffLeftAndClose()
         }
 
-        let window = QuickAccessWindow(result: result, settings: settings)
+        let captureScreen = NSScreen.screens.first { $0.displayID == result.displayID }
+        let window = QuickAccessWindow(result: result, settings: settings, screen: captureScreen)
 
         // All callbacks capture the specific `window` weakly so the right
         // stack slot gets dismissed — not whichever one happens to be newest.
@@ -208,30 +209,42 @@ final class CaptureCoordinator {
             self.dismissQuickAccessWindow(window)
         }
 
-        // Append the new preview at the TOP of the stack (end of array).
-        // The new window's init places it at slot 0 by default, so we snap
-        // it (without animation) to its real target slot before `show()` so
-        // the fade-in/slide-up happens from the correct position. Existing
-        // previews either stay put (if no eviction happened) or slide down
-        // one slot to fill the space left by the evicted oldest.
         quickAccessWindows.append(window)
-        for (i, win) in quickAccessWindows.enumerated() {
-            let animated = (win !== window)
-            win.repositionForStackIndex(i, animated: animated)
-        }
+        restackQuickAccessWindows(excluding: window)
         window.show()
     }
 
     /// Remove a specific preview from the stack and close it, then slide the
-    /// remaining previews down to collapse the gap.
+    /// remaining previews on the same screen down to collapse the gap.
     private func dismissQuickAccessWindow(_ window: QuickAccessWindow) {
         guard let idx = quickAccessWindows.firstIndex(where: { $0 === window }) else {
             return
         }
         quickAccessWindows.remove(at: idx)
         window.close()
-        for (i, existing) in quickAccessWindows.enumerated() {
-            existing.repositionForStackIndex(i, animated: true)
+        restackQuickAccessWindows()
+    }
+
+    /// Reposition all preview windows using per-screen stacking: windows on
+    /// the same screen share a stack (index 0 at the bottom, 1 above it, …),
+    /// independent of windows on other screens.
+    ///
+    /// - Parameter skipAnimation: A window to position without animation
+    ///   (used for the newly-created preview so it appears at the correct
+    ///   slot immediately before its show() fade-in).
+    private func restackQuickAccessWindows(excluding skipAnimation: QuickAccessWindow? = nil) {
+        // Group windows by their target screen's displayID, preserving order
+        // (oldest → newest within each group) so the oldest sits at index 0.
+        var perScreen: [CGDirectDisplayID: [QuickAccessWindow]] = [:]
+        for win in quickAccessWindows {
+            let id = win.targetScreen.displayID
+            perScreen[id, default: []].append(win)
+        }
+        for (_, windows) in perScreen {
+            for (i, win) in windows.enumerated() {
+                let animated = (win !== skipAnimation)
+                win.repositionForStackIndex(i, animated: animated)
+            }
         }
     }
 

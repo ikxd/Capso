@@ -14,15 +14,17 @@ final class QuickAccessWindow: NSPanel {
 
     private var autoDismissTimer: Timer?
     private let settings: AppSettings
+    /// The screen this preview is anchored to (where the capture originated).
+    let targetScreen: NSScreen
 
-    init(result: CaptureResult, settings: AppSettings) {
+    init(result: CaptureResult, settings: AppSettings, screen: NSScreen?) {
         self.settings = settings
+        self.targetScreen = screen ?? NSScreen.main ?? NSScreen.screens.first!
 
         let windowWidth: CGFloat = 336
         let windowHeight: CGFloat = 172
 
-        let screen = NSScreen.main ?? NSScreen.screens.first!
-        let screenFrame = screen.visibleFrame
+        let screenFrame = targetScreen.visibleFrame
         let x: CGFloat = switch settings.quickAccessPosition {
         case .bottomLeft: screenFrame.minX + 16
         case .bottomRight: screenFrame.maxX - windowWidth - 16
@@ -139,8 +141,7 @@ final class QuickAccessWindow: NSPanel {
     /// the user changes "bottom-left" ⇄ "bottom-right" between captures the
     /// stack still lines up correctly on the next reposition.
     func repositionForStackIndex(_ index: Int, animated: Bool = true) {
-        guard let screen = NSScreen.main ?? NSScreen.screens.first else { return }
-        let screenFrame = screen.visibleFrame
+        let screenFrame = targetScreen.visibleFrame
         let windowWidth = frame.width
         let windowHeight = frame.height
         let x: CGFloat = switch settings.quickAccessPosition {

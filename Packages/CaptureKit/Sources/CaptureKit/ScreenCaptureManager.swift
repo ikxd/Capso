@@ -35,7 +35,8 @@ public enum ScreenCaptureManager {
         return CaptureResult(
             image: image,
             mode: .fullscreen,
-            captureRect: display.frame
+            captureRect: display.frame,
+            displayID: display.displayID
         )
     }
 
@@ -102,7 +103,8 @@ public enum ScreenCaptureManager {
             mode: .window,
             captureRect: scWindow.frame,
             windowName: scWindow.title,
-            appName: scWindow.owningApplication?.applicationName
+            appName: scWindow.owningApplication?.applicationName,
+            displayID: display.displayID
         )
     }
 
@@ -130,7 +132,8 @@ public enum ScreenCaptureManager {
         return CaptureResult(
             image: image,
             mode: .area,
-            captureRect: rect
+            captureRect: rect,
+            displayID: displayID
         )
     }
 }
