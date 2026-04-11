@@ -71,6 +71,7 @@ struct AnnotationToolbar: View {
                         .overlay(Circle().stroke(Color.black.opacity(0.2), lineWidth: 0.5))
                 }
                 .buttonStyle(.plain)
+                .help(Text(color.rawValue.capitalized))
             }
         }
     }
@@ -124,11 +125,13 @@ struct AnnotationToolbar: View {
             }
             .disabled(!canUndo)
             .keyboardShortcut("z", modifiers: .command)
+            .help("Undo")
             Button(action: onRedo) {
                 Image(systemName: "arrow.uturn.forward")
             }
             .disabled(!canRedo)
             .keyboardShortcut("z", modifiers: [.command, .shift])
+            .help("Redo")
         }
         .buttonStyle(.bordered)
         .controlSize(.small)

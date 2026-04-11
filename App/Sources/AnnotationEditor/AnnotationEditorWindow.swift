@@ -40,6 +40,9 @@ final class AnnotationEditorWindow: NSPanel {
         self.isReleasedWhenClosed = false
         // Use .normal level so the window stays visible when app loses focus
         self.level = .normal
+        // Ensure tooltip tracking and key-window behaviour work correctly.
+        self.becomesKeyOnlyIfNeeded = false
+        self.acceptsMouseMovedEvents = true
 
         let view = AnnotationEditorView(
             sourceImage: image,

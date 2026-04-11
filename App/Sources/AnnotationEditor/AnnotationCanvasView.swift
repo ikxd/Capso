@@ -28,6 +28,7 @@ struct AnnotationCanvasView: NSViewRepresentable {
     }
 
     func updateNSView(_ nsView: AnnotationCanvasNSView, context: Context) {
+        let toolChanged = nsView.currentTool != currentTool
         nsView.currentTool = currentTool
         nsView.currentStyle = currentStyle
         nsView.zoomScale = zoomScale
@@ -37,5 +38,8 @@ struct AnnotationCanvasView: NSViewRepresentable {
             }
         }
         nsView.needsDisplay = true
+        if toolChanged {
+            nsView.window?.invalidateCursorRects(for: nsView)
+        }
     }
 }

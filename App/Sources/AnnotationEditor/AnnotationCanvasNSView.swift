@@ -77,11 +77,15 @@ final class AnnotationCanvasNSView: NSView {
 
     // MARK: - Cursor Management
 
+    override func resetCursorRects() {
+        discardCursorRects()
+        let cursor: NSCursor = currentTool == .select ? .arrow : .crosshair
+        addCursorRect(visibleRect, cursor: cursor)
+    }
+
     override func mouseMoved(with event: NSEvent) {
-        guard currentTool == .select else {
-            NSCursor.crosshair.set()
-            return
-        }
+        // For drawing tools the cursor rect handles the crosshair; nothing to do.
+        guard currentTool == .select else { return }
 
         let point = toImagePoint(convert(event.locationInWindow, from: nil))
         guard let doc = document else { return }
