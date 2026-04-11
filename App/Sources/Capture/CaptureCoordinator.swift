@@ -64,8 +64,11 @@ final class CaptureCoordinator {
         // Enumerate windows first, then show overlay in window selection mode
         Task {
             do {
+                // Exclude only Capso's overlay windows (not all Capso windows
+                // like Settings) so the user can still capture them.
+                let overlayIDs = Set(overlayWindows.map { CGWindowID($0.windowNumber) })
                 let windows = try await ContentEnumerator.windows()
-                    .filter { $0.appName != "Capso" }
+                    .filter { !overlayIDs.contains($0.id) }
 
                 guard !windows.isEmpty else {
                     print("No windows found to capture")
