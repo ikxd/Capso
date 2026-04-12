@@ -133,11 +133,24 @@ jobs:
 
           ditto -c -k --keepParent "$APP" "$NOTARIZE_ZIP"
 
-          xcrun notarytool submit "$NOTARIZE_ZIP" \
+          SUBMIT_OUT=$(xcrun notarytool submit "$NOTARIZE_ZIP" \
             --apple-id "$APPLE_ID" \
             --password "$NOTARIZE_PASSWORD" \
             --team-id "$APPLE_TEAM_ID" \
-            --wait
+            --wait 2>&1) || true
+          echo "$SUBMIT_OUT"
+
+          # Extract submission ID and fetch detailed log on failure
+          SUB_ID=$(echo "$SUBMIT_OUT" | grep "id:" | head -1 | awk '{print $2}')
+          STATUS=$(echo "$SUBMIT_OUT" | grep "status:" | tail -1 | awk '{print $2}')
+          if [ "$STATUS" != "Accepted" ]; then
+            echo "::error::Notarization failed with status: $STATUS"
+            xcrun notarytool log "$SUB_ID" \
+              --apple-id "$APPLE_ID" \
+              --password "$NOTARIZE_PASSWORD" \
+              --team-id "$APPLE_TEAM_ID" || true
+            exit 1
+          fi
 
           rm -f "$NOTARIZE_ZIP"
 
@@ -145,7 +158,13 @@ jobs:
         run: |
           set -euo pipefail
           APP="build/export/${APP_NAME}.app"
-          xcrun stapler staple "$APP"
+          for i in 1 2 3 4 5; do
+            if xcrun stapler staple "$APP"; then
+              break
+            fi
+            echo "Staple attempt $i failed, retrying in 15s..."
+            sleep 15
+          done
           xcrun stapler validate "$APP"
           spctl -a -t exec -vv "$APP" || true
 
