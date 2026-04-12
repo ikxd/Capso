@@ -32,6 +32,8 @@
     <string>en</string>
     <key>SUFeedURL</key>
     <string>https://lzhgus.github.io/Capso/appcast.xml</string>
+    <key>SUPublicEDKey</key>
+    <string>c3xaKUJIOJ3qF9+51iLr1/CxskdbxDaHDjeU5Wqx9aE=</string>
     <key>SUEnableAutomaticChecks</key>
     <true/>
     <key>SUScheduledCheckInterval</key>

@@ -320,13 +320,25 @@ jobs:
 
       - name: Update Sparkle appcast on gh-pages
         if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
           set -euo pipefail
           VERSION="${{ steps.version.outputs.version }}"
-          BUILD="${{ steps.version.outputs.version }}"
           DMG="build/releases/${APP_NAME}-${VERSION}.dmg"
           DMG_SIZE=$(stat -f%z "$DMG")
           PUB_DATE=$(date -R)
+
+          # Sign the DMG with Sparkle EdDSA
+          SPARKLE_SIGN=$(find $HOME/Library/Developer/Xcode/DerivedData/Capso-*/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update -maxdepth 0 2>/dev/null | head -1)
+          if [ -z "$SPARKLE_SIGN" ]; then
+            # Fallback: resolve from SPM checkout
+            SPARKLE_SIGN=$(find /Users/runner/Library/Developer/Xcode/DerivedData -name "sign_update" -path "*/sparkle/Sparkle/bin/*" 2>/dev/null | head -1)
+          fi
+          ED_SIGNATURE=""
+          if [ -n "$SPARKLE_SIGN" ] && [ -n "$SPARKLE_PRIVATE_KEY" ]; then
+            ED_SIGNATURE=$("$SPARKLE_SIGN" "$DMG" --ed-key-file <(echo "$SPARKLE_PRIVATE_KEY") | grep "sparkle:edSignature" | sed 's/.*"\(.*\)".*/\1/')
+          fi
 
           # Clone only the gh-pages branch
           git clone --branch gh-pages --single-branch \
@@ -350,6 +362,7 @@ jobs:
                 <enclosure
                   url="https://github.com/lzhgus/Capso/releases/download/v${VERSION}/Capso-${VERSION}.dmg"
                   type="application/octet-stream"
+                  sparkle:edSignature="${ED_SIGNATURE}"
                   length="${DMG_SIZE}"
                 />
               </item>
