@@ -121,33 +121,40 @@ jobs:
           fi
           cp -R "$APP_PATH" "build/export/${APP_NAME}.app"
 
-          # Re-sign Sparkle's embedded XPC Services and framework with our
-          # Developer ID + hardened runtime + secure timestamp. SPM-delivered
-          # Sparkle binaries are not signed with our identity, which causes
-          # notarization to reject them.
+          # Re-sign Sparkle framework with our Developer ID + hardened
+          # runtime + secure timestamp. SPM-delivered Sparkle binaries are
+          # not signed with our identity, causing notarization rejection.
+          # Signing order: individual binaries → XPC bundles → .app bundles
+          # → framework → main app (inside-out).
           APP="build/export/${APP_NAME}.app"
           SPARKLE_FW="$APP/Contents/Frameworks/Sparkle.framework"
+          SIGN_ID="Developer ID Application"
           if [ -d "$SPARKLE_FW" ]; then
-            echo "Re-signing Sparkle framework and XPC Services..."
-            find "$SPARKLE_FW" -name "*.xpc" -type d | while read xpc; do
-              codesign --force --deep --sign "Developer ID Application" \
-                --options runtime --timestamp "$xpc"
+            echo "Re-signing Sparkle framework..."
+
+            # 1. Sign all nested executables (Autoupdate, Downloader, Installer, etc.)
+            find "$SPARKLE_FW" -type f -perm +111 \( -name "Autoupdate" -o -name "Updater" -o -name "Downloader" -o -name "Installer" \) | while read -r binary; do
+              codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$binary" 2>/dev/null || true
             done
-            # Sign Autoupdate helper if present
-            find "$SPARKLE_FW" -name "Autoupdate" -type f | while read helper; do
-              codesign --force --sign "Developer ID Application" \
-                --options runtime --timestamp "$helper"
+
+            # 2. Sign XPC service bundles
+            find "$SPARKLE_FW" -name "*.xpc" -type d | while read -r xpc; do
+              codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$xpc"
             done
-            # Re-sign the framework itself
-            codesign --force --deep --sign "Developer ID Application" \
-              --options runtime --timestamp "$SPARKLE_FW"
+
+            # 3. Sign Updater.app bundle if present
+            find "$SPARKLE_FW" -name "Updater.app" -type d | while read -r app; do
+              codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$app"
+            done
+
+            # 4. Sign the framework itself
+            codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$SPARKLE_FW"
+            echo "Sparkle framework re-signed."
           fi
 
-          # Re-sign the app bundle to incorporate the newly signed components
-          codesign --force --deep --sign "Developer ID Application" \
-            --options runtime --timestamp \
-            --entitlements App/Entitlements/Capso.entitlements \
-            "$APP"
+          # Re-sign the main app bundle (picks up re-signed framework)
+          codesign --force --sign "$SIGN_ID" --options runtime --timestamp \
+            --entitlements App/Entitlements/Capso.entitlements "$APP"
 
           # Verify the signature and hardened runtime
           codesign --verify --deep --strict --verbose=2 "$APP"
