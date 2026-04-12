@@ -1,9 +1,11 @@
 // App/Sources/Preferences/Tabs/GeneralSettingsView.swift
 import SwiftUI
 import LaunchAtLogin
+import Sparkle
 
 struct GeneralSettingsView: View {
     @Bindable var viewModel: PreferencesViewModel
+    let updater: SPUUpdater?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -36,6 +38,16 @@ struct GeneralSettingsView: View {
                         Toggle("", isOn: $viewModel.playShutterSound)
                             .toggleStyle(.switch)
                             .controlSize(.small)
+                    }
+                }
+            }
+
+            if let updater {
+                SettingGroup(title: "Updates") {
+                    SettingCard {
+                        SettingRow(label: "Check for Updates", sublabel: "Automatically checks daily") {
+                            CheckForUpdatesView(updater: updater)
+                        }
                     }
                 }
             }

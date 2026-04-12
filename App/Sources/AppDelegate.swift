@@ -2,6 +2,7 @@
 import AppKit
 import SharedKit
 import KeyboardShortcuts
+import Sparkle
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -12,6 +13,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private(set) var recordingCoordinator: RecordingCoordinator?
     private(set) var ocrCoordinator: OCRCoordinator?
     private var preferencesWindow: PreferencesWindow?
+    /// Sparkle updater controller — manages the update lifecycle.
+    let updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Show tooltips faster (default is ~2s, reduce to 0.3s)
@@ -23,7 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         recordingCoordinator = RecordingCoordinator(settings: settings)
         ocrCoordinator = OCRCoordinator(settings: settings)
         captureCoordinator!.ocrCoordinator = ocrCoordinator
-        preferencesWindow = PreferencesWindow(settings: settings)
+        preferencesWindow = PreferencesWindow(settings: settings, updater: updaterController.updater)
         menuBarController = MenuBarController(
             settings: settings,
             captureCoordinator: captureCoordinator!,

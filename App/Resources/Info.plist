@@ -30,5 +30,11 @@
     <string>Capso needs microphone access to record audio during screen recordings.</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
+    <key>SUFeedURL</key>
+    <string>https://lzhgus.github.io/Capso/appcast.xml</string>
+    <key>SUEnableAutomaticChecks</key>
+    <true/>
+    <key>SUScheduledCheckInterval</key>
+    <integer>86400</integer>
 </dict>
 </plist>
