@@ -135,11 +135,14 @@ final class CaptureCoordinator {
         for screen in NSScreen.screens {
             if let image = Self.syncCaptureDisplay(screen.displayID) {
                 frozenScreens.append((screen, image))
+                print("[FreezeScreen] Captured display \(screen.displayID): \(image.width)x\(image.height)")
+            } else {
+                print("[FreezeScreen] CGDisplayCreateImage FAILED for display \(screen.displayID)")
             }
         }
 
         guard !frozenScreens.isEmpty else {
-            // Fallback to non-frozen overlay if sync capture failed
+            print("[FreezeScreen] No screens captured, falling back to live overlay")
             showOverlay()
             return
         }
