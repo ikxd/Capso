@@ -212,7 +212,7 @@ public final class AppSettings: @unchecked Sendable {
     }
 
     public var freezeScreen: Bool {
-        get { defaults.object(forKey: "freezeScreen") as? Bool ?? false }
+        get { defaults.object(forKey: "freezeScreen") as? Bool ?? true }
         set { defaults.set(newValue, forKey: "freezeScreen") }
     }
 

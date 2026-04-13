@@ -23,6 +23,8 @@ final class CaptureCoordinator {
     private let maxQuickAccessStackSize = 5
     private var annotationWindow: AnnotationEditorWindow?
     private var pinnedControllers: [PinnedScreenshotController] = []
+    /// Opaque freeze-screen windows (one per display) that replace the live desktop
+    private var freezeWindows: [NSWindow] = []
     private var scrollCaptureController: ScrollCaptureController?
     private var scrollCaptureOverlay: ScrollCaptureOverlay?
 
@@ -34,10 +36,16 @@ final class CaptureCoordinator {
     }
 
     func captureArea() {
-        // Small delay to let the menu bar dropdown fully dismiss
-        // before showing the capture overlay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
-            self?.showOverlay()
+        if settings.freezeScreen {
+            // Freeze screen: synchronously capture all screens FIRST (preserving
+            // dropdowns/popups), then show overlay with frozen image as background.
+            // No delay — must be instant before anything can dismiss.
+            showFrozenOverlay()
+        } else {
+            // Non-frozen: small delay to let menu bar dropdown dismiss
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
+                self?.showOverlay()
+            }
         }
     }
 
@@ -111,6 +119,86 @@ final class CaptureCoordinator {
                 self?.dismissOverlay()
             }
             overlay.activate(mode: mode)
+            overlayWindows.append(overlay)
+        }
+    }
+
+    /// Two-window freeze architecture (same as CleanShot X's FSWindow + FSOverlay):
+    ///
+    /// 1. Bottom window: OPAQUE, shows frozen image, completely replaces the
+    ///    live desktop. isOpaque=true means no compositing with what's behind
+    ///    → no sub-pixel mismatch → no shaking. Pre-rendered before showing.
+    ///
+    /// 2. Top window: TRANSPARENT overlay for crosshair + selection + dark tint.
+    ///    Drawn on top of the frozen window, not on the live desktop.
+    private func showFrozenOverlay() {
+        dismissOverlay()
+
+        var frozenScreens: [(NSScreen, CGImage)] = []
+        for screen in NSScreen.screens {
+            if let image = Self.syncCaptureDisplay(screen.displayID) {
+                frozenScreens.append((screen, image))
+            }
+        }
+
+        guard !frozenScreens.isEmpty else {
+            showOverlay()
+            return
+        }
+
+        // Step 1: Create opaque freeze windows (bottom layer)
+        for (screen, frozenImage) in frozenScreens {
+            let freezeWin = NSWindow(
+                contentRect: screen.frame,
+                styleMask: [.borderless],
+                backing: .buffered,
+                defer: false
+            )
+            freezeWin.level = .screenSaver - 1
+            freezeWin.isOpaque = true
+            freezeWin.hasShadow = false
+            freezeWin.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .transient]
+            freezeWin.hidesOnDeactivate = false
+
+            let imageView = NSImageView(frame: NSRect(origin: .zero, size: screen.frame.size))
+            imageView.image = NSImage(cgImage: frozenImage, size: screen.frame.size)
+            imageView.imageScaling = .scaleAxesIndependently
+            freezeWin.contentView = imageView
+
+            // Pre-render and show
+            freezeWin.displayIfNeeded()
+            freezeWin.orderFrontRegardless()
+            freezeWindows.append(freezeWin)
+        }
+
+        // Step 2: Create transparent overlay windows (top layer) for selection
+        for (screen, frozenImage) in frozenScreens {
+            let overlay = CaptureOverlayWindow(screen: screen)
+            overlay.onAreaSelected = { [weak self] rect, screen in
+                self?.dismissOverlay()
+                let screenFrame = screen.frame
+                let scaleX = CGFloat(frozenImage.width) / screenFrame.width
+                let scaleY = CGFloat(frozenImage.height) / screenFrame.height
+                let cropRect = CGRect(
+                    x: rect.origin.x * scaleX,
+                    y: (screenFrame.height - rect.origin.y - rect.height) * scaleY,
+                    width: rect.width * scaleX,
+                    height: rect.height * scaleY
+                )
+                if let cropped = frozenImage.cropping(to: cropRect) {
+                    let result = CaptureResult(
+                        image: cropped,
+                        mode: .area,
+                        captureRect: rect,
+                        displayID: screen.displayID
+                    )
+                    self?.handleCaptureResult(result)
+                }
+            }
+            overlay.onCancelled = { [weak self] in
+                self?.dismissOverlay()
+            }
+            overlay.activate(mode: .area)
             overlayWindows.append(overlay)
         }
     }
@@ -274,6 +362,24 @@ final class CaptureCoordinator {
             window.deactivate()
         }
         overlayWindows.removeAll()
+
+        // Fade out freeze windows smoothly instead of instant removal
+        let windows = freezeWindows
+        freezeWindows.removeAll()
+        if windows.isEmpty { return }
+
+        NSAnimationContext.runAnimationGroup { ctx in
+            ctx.duration = 0.15
+            for window in windows {
+                window.animator().alphaValue = 0
+            }
+        }
+        // Clean up after animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            for window in windows {
+                window.orderOut(nil)
+            }
+        }
     }
 
     // MARK: - Scrolling Capture
@@ -568,6 +674,23 @@ final class CaptureCoordinator {
 
     private func copyRenderedImage(_ image: CGImage) {
         copyImageToClipboard(image)
+    }
+
+    // MARK: - Synchronous Display Capture
+
+    /// Synchronously capture a display using CGDisplayCreateImage.
+    /// This is the same API used by CleanShot X and Shottr for freeze-screen.
+    /// It's deprecated in macOS 14+ but still functional — loaded via dlsym
+    /// to bypass the compile-time unavailability annotation.
+    private static func syncCaptureDisplay(_ displayID: CGDirectDisplayID) -> CGImage? {
+        typealias CGDisplayCreateImageFunc = @convention(c) (CGDirectDisplayID) -> CGImage?
+        guard let handle = dlopen("/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics", RTLD_LAZY),
+              let sym = dlsym(handle, "CGDisplayCreateImage") else {
+            return nil
+        }
+        defer { dlclose(handle) }
+        let fn = unsafeBitCast(sym, to: CGDisplayCreateImageFunc.self)
+        return fn(displayID)
     }
 }
 

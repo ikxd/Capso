@@ -206,72 +206,6 @@
         }
       }
     },
-    "After Capture" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "キャプチャ後"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "캡처 후"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "截图后"
-          }
-        }
-      }
-    },
-    "Auto Save" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "自動保存"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "자동 저장"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "自动保存"
-          }
-        }
-      }
-    },
-    "Automatically checks daily" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "毎日自動チェック"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "매일 자동 확인"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "每天自动检查"
-          }
-        }
-      }
-    },
     "About Capso" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -291,6 +225,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "关于 Capso"
+          }
+        }
+      }
+    },
+    "After Capture" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャプチャ後"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캡처 후"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "截图后"
           }
         }
       }
@@ -387,6 +344,29 @@
         }
       }
     },
+    "Auto Save" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動保存"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동 저장"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动保存"
+          }
+        }
+      }
+    },
     "Auto-Close" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -475,6 +455,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自动检测并转换 URL 链接"
+          }
+        }
+      }
+    },
+    "Automatically checks daily" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎日自動チェック"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "매일 자동 확인"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每天自动检查"
           }
         }
       }
@@ -572,6 +575,7 @@
       }
     },
     "Cancel" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -708,72 +712,6 @@
         }
       }
     },
-    "Check for Updates" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アップデートを確認"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "업데이트 확인"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "检查更新"
-          }
-        }
-      }
-    },
-    "Copy screenshot immediately" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "キャプチャ後すぐにコピー"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "캡처 후 즉시 복사"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "截图后立即复制"
-          }
-        }
-      }
-    },
-    "Copy to Clipboard" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クリップボードにコピー"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "클립보드에 복사"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "复制到剪贴板"
-          }
-        }
-      }
-    },
     "Capture Window Shadow" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -793,6 +731,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "捕捉窗口阴影"
+          }
+        }
+      }
+    },
+    "Check for Updates" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップデートを確認"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업데이트 확인"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "检查更新"
           }
         }
       }
@@ -861,6 +822,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "点击快捷键以录制新的组合。按 **Esc** 取消或按 **Delete** 删除。"
+          }
+        }
+      }
+    },
+    "Click Start, then scroll" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スタートを押してスクロール"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작을 누르고 스크롤하세요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点击开始，然后滚动页面"
           }
         }
       }
@@ -1000,6 +984,29 @@
         }
       }
     },
+    "Copy screenshot immediately" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャプチャ後すぐにコピー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캡처 후 즉시 복사"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "截图后立即复制"
+          }
+        }
+      }
+    },
     "Copy screenshot immediately after capture" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1019,6 +1026,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "截图后立即复制到剪贴板"
+          }
+        }
+      }
+    },
+    "Copy to Clipboard" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クリップボードにコピー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클립보드에 복사"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制到剪贴板"
           }
         }
       }
@@ -1230,6 +1260,29 @@
         }
       }
     },
+    "Display thumbnail with quick actions" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サムネイルとクイックアクションを表示"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "빠른 작업이 포함된 미리보기 표시"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示缩略图和快捷操作"
+          }
+        }
+      }
+    },
     "Do Not Record Microphone" : {
       "localizations" : {
         "ja" : {
@@ -1252,29 +1305,8 @@
         }
       }
     },
-    "Display thumbnail with quick actions" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "サムネイルとクイックアクションを表示"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "빠른 작업이 포함된 미리보기 표시"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "显示缩略图和快捷操作"
-          }
-        }
-      }
-    },
     "Done" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2569,50 +2601,6 @@
         }
       }
     },
-    "Save to file automatically" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "自動的にファイルに保存"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "파일로 자동 저장"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "自动保存到文件"
-          }
-        }
-      }
-    },
-    "Show Preview" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プレビューを表示"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "미리보기 표시"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "显示预览"
-          }
-        }
-      }
-    },
     "Save" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2655,6 +2643,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存位置"
+          }
+        }
+      }
+    },
+    "Save to file automatically" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動的にファイルに保存"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일로 자동 저장"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动保存到文件"
           }
         }
       }
@@ -2709,6 +2720,29 @@
         }
       }
     },
+    "Screenshot History" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スクリーンショット履歴"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스크린샷 기록"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "截图历史"
+          }
+        }
+      }
+    },
     "Screenshots" : {
       "localizations" : {
         "ja" : {
@@ -2731,29 +2765,8 @@
         }
       }
     },
-    "Click Start, then scroll" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スタートを押してスクロール"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "시작을 누르고 스크롤하세요"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "点击开始，然后滚动页面"
-          }
-        }
-      }
-    },
     "Scroll slowly to capture" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2776,6 +2789,7 @@
       }
     },
     "Scroll to start" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2798,6 +2812,7 @@
       }
     },
     "Scrolling Capture" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2815,28 +2830,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "滚动截图"
-          }
-        }
-      }
-    },
-    "Screenshot History" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スクリーンショット履歴"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "스크린샷 기록"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "截图历史"
           }
         }
       }
@@ -3045,6 +3038,29 @@
         }
       }
     },
+    "Show Preview" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレビューを表示"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "미리보기 표시"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示预览"
+          }
+        }
+      }
+    },
     "Shutter Sound" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3204,28 +3220,6 @@
         }
       }
     },
-    "Start Capture" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "キャプチャ開始"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "캡처 시작"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "开始截图"
-          }
-        }
-      }
-    },
     "Start / Stop Recording" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3268,6 +3262,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "登录 Mac 时自动启动 Capso"
+          }
+        }
+      }
+    },
+    "Start Capture" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャプチャ開始"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캡처 시작"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始截图"
           }
         }
       }
@@ -3461,6 +3478,7 @@
       }
     },
     "Updates" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
