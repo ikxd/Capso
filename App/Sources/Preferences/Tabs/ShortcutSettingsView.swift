@@ -9,6 +9,8 @@ extension KeyboardShortcuts.Name {
     static let captureText = Self("captureText", default: .init(.four, modifiers: [.option, .shift]))
     static let recordScreen = Self("recordScreen", default: .init(.five, modifiers: [.option, .shift]))
     static let captureScrolling = Self("captureScrolling", default: .init(.six, modifiers: [.option, .shift]))
+    static let captureAreaToClipboard = Self("captureAreaToClipboard", default: .init(.seven, modifiers: [.option, .shift]))
+    static let captureAreaAndAnnotate = Self("captureAreaAndAnnotate", default: .init(.eight, modifiers: [.option, .shift]))
 }
 
 struct ShortcutSettingsView: View {
@@ -41,6 +43,8 @@ struct ShortcutSettingsView: View {
                     shortcutRow("Capture Window", name: .captureWindow, showDivider: true)
                     shortcutRow("Capture Text (OCR)", name: .captureText, showDivider: true)
                     shortcutRow("Scrolling Capture", name: .captureScrolling, showDivider: true)
+                    shortcutRow("Capture Area to Clipboard", name: .captureAreaToClipboard, showDivider: true)
+                    shortcutRow("Capture Area & Annotate", name: .captureAreaAndAnnotate, showDivider: true)
                 }
             }
 

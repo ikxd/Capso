@@ -72,6 +72,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         KeyboardShortcuts.onKeyDown(for: .captureScrolling) { [weak self] in
             self?.captureCoordinator?.captureScrolling()
         }
+        KeyboardShortcuts.onKeyDown(for: .captureAreaToClipboard) { [weak self] in
+            self?.captureCoordinator?.captureAreaToClipboard()
+        }
+        KeyboardShortcuts.onKeyDown(for: .captureAreaAndAnnotate) { [weak self] in
+            self?.captureCoordinator?.captureAreaAndAnnotate()
+        }
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

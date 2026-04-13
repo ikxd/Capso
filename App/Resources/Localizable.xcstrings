@@ -620,6 +620,50 @@
         }
       }
     },
+    "Capture Area & Annotate" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エリアキャプチャ & 注釈"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영역 캡처 & 주석"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "截取区域并标注"
+          }
+        }
+      }
+    },
+    "Capture Area to Clipboard" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エリアをクリップボードにキャプチャ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영역을 클립보드에 캡처"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "截取区域到剪贴板"
+          }
+        }
+      }
+    },
     "Capture Area" : {
       "extractionState" : "stale",
       "localizations" : {

@@ -31,18 +31,38 @@ final class CaptureCoordinator {
     var lastCaptureResult: CaptureResult?
     var ocrCoordinator: OCRCoordinator?
 
+    /// Post-capture action override. When set, ignores Settings toggles.
+    private var pendingAction: PostCaptureAction = .default
+
+    enum PostCaptureAction {
+        case `default`    // Use Settings (Show Preview / Copy / Auto Save)
+        case clipboard    // Copy to clipboard only, no preview
+        case annotate     // Open annotation editor directly
+    }
+
     init(settings: AppSettings) {
         self.settings = settings
     }
 
     func captureArea() {
+        pendingAction = .default
+        startAreaCapture()
+    }
+
+    func captureAreaToClipboard() {
+        pendingAction = .clipboard
+        startAreaCapture()
+    }
+
+    func captureAreaAndAnnotate() {
+        pendingAction = .annotate
+        startAreaCapture()
+    }
+
+    private func startAreaCapture() {
         if settings.freezeScreen {
-            // Freeze screen: synchronously capture all screens FIRST (preserving
-            // dropdowns/popups), then show overlay with frozen image as background.
-            // No delay — must be instant before anything can dismiss.
             showFrozenOverlay()
         } else {
-            // Non-frozen: small delay to let menu bar dropdown dismiss
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
                 self?.showOverlay()
             }
@@ -505,14 +525,25 @@ final class CaptureCoordinator {
             Self.shutterSound?.stop()
             Self.shutterSound?.play()
         }
-        if settings.screenshotAutoCopy {
+
+        let action = pendingAction
+        pendingAction = .default
+
+        switch action {
+        case .clipboard:
             copyImageToClipboard(result.image)
-        }
-        if settings.screenshotAutoSave {
-            saveImageToFile(result.image)
-        }
-        if settings.screenshotShowPreview {
-            showQuickAccess(for: result)
+        case .annotate:
+            openAnnotationEditor(result)
+        case .default:
+            if settings.screenshotAutoCopy {
+                copyImageToClipboard(result.image)
+            }
+            if settings.screenshotAutoSave {
+                saveImageToFile(result.image)
+            }
+            if settings.screenshotShowPreview {
+                showQuickAccess(for: result)
+            }
         }
     }
 
