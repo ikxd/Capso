@@ -26,6 +26,7 @@ final class CaptureOverlayWindow: NSPanel {
         self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         self.isMovable = false
         self.acceptsMouseMovedEvents = true
+        self.becomesKeyOnlyIfNeeded = true
 
         overlayView = CaptureOverlayView(frame: screen.frame)
         overlayView.onSelectionComplete = { [weak self] rect in
@@ -46,8 +47,10 @@ final class CaptureOverlayWindow: NSPanel {
     override var canBecomeMain: Bool { true }
 
     func activate(mode: CaptureOverlayMode = .area) {
-        NSApp.activate(ignoringOtherApps: true)
-        makeKeyAndOrderFront(nil)
+        // Use orderFrontRegardless instead of NSApp.activate + makeKeyAndOrderFront
+        // to avoid stealing focus from the target app. This preserves dropdown
+        // menus, popups, and mouse focus in the app being captured.
+        orderFrontRegardless()
         makeFirstResponder(overlayView)
         overlayView.setMode(mode)
         overlayView.resetSelection()
