@@ -1,5 +1,5 @@
 <p align="right">
-  <a href="README.md">English</a> | <strong>简体中文</strong>
+  <a href="README.md">English</a> | <strong>简体中文</strong> | <a href="README.ja.md">日本語</a> | <a href="README.ko.md">한국어</a>
 </p>
 
 # Capso
@@ -61,6 +61,7 @@ brew install --cask capso
 - **区域截图**：拖拽选择，实时显示尺寸
 - **全屏截图**：一键捕获整个屏幕
 - **窗口截图**：点击任意窗口即可捕获
+- **滚动截图**：将长网页、聊天记录、文档内容拼接成一张完整长图
 - **快速操作**：浮动预览窗口，支持复制、保存、标注、OCR、钉住、拖放
 
 ### 录屏
@@ -81,6 +82,11 @@ brew install --cask capso
 ### OCR 文字识别
 - **即时 OCR**：选择区域后文字自动复制到剪贴板
 - **可视化 OCR**：高亮显示识别区域，点击选择单个文本块
+
+### 截图历史
+- **持久化记录**：在一个窗口中统一浏览截图、GIF 和录屏记录
+- **内置快捷操作**：支持筛选、复制、保存、在 Finder 中显示、删除
+- **保留策略控制**：可自动保存历史，并设置记录保留时长
 
 ### 更多
 - **钉到屏幕**：将截图悬浮为置顶窗口，支持锁定和穿透点击模式
@@ -151,7 +157,7 @@ xcodebuild -project Capso.xcodeproj -scheme Capso -configuration Release build
 
 ## 架构
 
-Capso 采用模块化的 SPM 架构。App 本身是一个很薄的 SwiftUI + AppKit 壳层，核心能力分布在 8 个独立的包中。
+Capso 采用模块化的 SPM 架构。App 本身是一个很薄的 SwiftUI + AppKit 壳层，核心能力分布在 9 个独立的包中。
 
 ```
 Capso/
@@ -163,6 +169,7 @@ Capso/
 │   ├── Camera/              # 摄像头画中画
 │   ├── AnnotationEditor/    # 标注编辑器 + 美化
 │   ├── OCR/                 # 文字识别
+│   ├── History/             # 截图历史窗口
 │   ├── QuickAccess/         # 快速操作浮窗
 │   └── Preferences/         # 设置
 ├── Packages/
@@ -173,7 +180,8 @@ Capso/
 │   ├── AnnotationKit/       # 绘制/标注系统
 │   ├── OCRKit/              # Vision 框架 OCR
 │   ├── ExportKit/           # 视频/GIF/图片导出
-│   └── EffectsKit/          # 光标特效
+│   ├── EffectsKit/          # 光标特效
+│   └── HistoryKit/          # 持久化截图/录屏历史
 └── project.yml              # XcodeGen 项目定义
 ```
 
@@ -193,11 +201,9 @@ swift test --package-path Packages/AnnotationKit
 
 - 聚光灯、放大镜、标尺、图片叠加等标注工具
 - 文字标注支持 Emoji 和自定义字体
-- 截图历史浏览器
 - 视频剪辑编辑器
 - 光标平滑（弹簧物理）
 - 录制视频的缩放动画
-- 滚动截图（辅助功能 API + Vision 拼接）
 - URL Scheme API
 - Raycast / 快捷指令集成
 

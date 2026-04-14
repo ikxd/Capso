@@ -1,5 +1,5 @@
 <p align="right">
-  <strong>English</strong> | <a href="README.zh-CN.md">简体中文</a>
+  <strong>English</strong> | <a href="README.zh-CN.md">简体中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.ko.md">한국어</a>
 </p>
 
 # Capso
@@ -59,6 +59,7 @@ We make our money from [other tools](https://www.awesomemacapp.com/). Capso exis
 - **Area capture** — drag to select with dimension display
 - **Fullscreen capture** — one-click full screen
 - **Window capture** — click any window to capture
+- **Scrolling capture** — capture long webpages, chat threads, and documents into one stitched image
 - **Quick Access** — floating preview with copy, save, annotate, OCR, pin, and drag-and-drop
 
 ### Screen Recording
@@ -79,6 +80,11 @@ We make our money from [other tools](https://www.awesomemacapp.com/). Capso exis
 ### OCR (Text Recognition)
 - **Instant OCR** — select area, text copied to clipboard
 - **Visual OCR** — highlighted text regions, click to select individual blocks
+
+### Screenshot History
+- **Persistent library** — browse screenshots, GIFs, and recordings in one place
+- **Built-in actions** — filter captures, copy, save, show in Finder, and delete without leaving Capso
+- **Retention controls** — keep history automatically and choose how long entries stay around
 
 ### More
 - **Pin to Screen** — float screenshots as always-on-top windows with lock/click-through mode
@@ -149,7 +155,7 @@ xcodebuild -project Capso.xcodeproj -scheme Capso -configuration Release build
 
 ## Architecture
 
-Capso uses a modular SPM (Swift Package Manager) architecture. The app is a thin SwiftUI + AppKit shell; all core capabilities live in 8 independent packages.
+Capso uses a modular SPM (Swift Package Manager) architecture. The app is a thin SwiftUI + AppKit shell; all core capabilities live in 9 independent packages.
 
 ```
 Capso/
@@ -161,6 +167,7 @@ Capso/
 │   ├── Camera/              # Webcam PiP window
 │   ├── AnnotationEditor/    # Annotation editor + beautify
 │   ├── OCR/                 # OCR coordinator, overlay, toast
+│   ├── History/             # Screenshot history window
 │   ├── QuickAccess/         # Floating preview window
 │   └── Preferences/         # Settings window
 ├── Packages/
@@ -171,7 +178,8 @@ Capso/
 │   ├── AnnotationKit/       # Drawing/annotation system
 │   ├── OCRKit/              # Vision framework OCR
 │   ├── ExportKit/           # Video/GIF/image export
-│   └── EffectsKit/          # Cursor effects, click highlights
+│   ├── EffectsKit/          # Cursor effects, click highlights
+│   └── HistoryKit/          # Persistent screenshot/recording history
 └── project.yml              # XcodeGen project definition
 ```
 
@@ -191,11 +199,9 @@ The package split means you can embed, for example, `CaptureKit` or `AnnotationK
 
 - Spotlight, magnifier, ruler, image overlay annotation tools
 - Emoji support and custom fonts in text annotations
-- Screenshot history browser
 - Video trimmer/editor
 - Cursor smoothing (spring-physics during export)
 - Zoom animation on recorded video
-- Scrolling capture (Accessibility API + Vision stitching)
 - URL scheme API for automation
 - Raycast / Shortcuts integration
 
