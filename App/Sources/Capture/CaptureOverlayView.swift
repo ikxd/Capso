@@ -412,14 +412,39 @@ final class CaptureOverlayView: NSView {
         needsDisplay = true
     }
 
+    override func rightMouseDown(with event: NSEvent) {
+        switch mode {
+        case .area:
+            if isDragging {
+                cancelCurrentSelection()
+            } else {
+                cancelOverlay()
+            }
+
+        case .windowSelection:
+            cancelOverlay()
+        }
+    }
+
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 53 { // ESC
-            NSCursor.unhide()
-            onCancel?()
+            cancelOverlay()
         }
     }
 
     override var acceptsFirstResponder: Bool { true }
 
     override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
+
+    private func cancelCurrentSelection() {
+        isDragging = false
+        dragStart = currentMouseLocation
+        dragEnd = currentMouseLocation
+        needsDisplay = true
+    }
+
+    private func cancelOverlay() {
+        restoreCursorIfNeeded()
+        onCancel?()
+    }
 }

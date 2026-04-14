@@ -40,4 +40,30 @@ struct AppSettingsTests {
         let settings = AppSettings()
         #expect(settings.isProUnlocked == false)
     }
+
+    @Test("File formats map common extensions")
+    func fileFormatExtensionMapping() {
+        #expect(FileFormat(pathExtension: "png") == .png)
+        #expect(FileFormat(pathExtension: "jpg") == .jpeg)
+        #expect(FileFormat(pathExtension: "jpeg") == .jpeg)
+        #expect(FileFormat(pathExtension: "gif") == .gif)
+        #expect(FileFormat(pathExtension: "mp4") == .mp4)
+        #expect(FileFormat(pathExtension: "mov") == .mov)
+        #expect(FileFormat(pathExtension: "webm") == nil)
+    }
+
+    @Test("Generated file names preserve the requested extension")
+    func generatedFileNamesUseFormatExtension() {
+        let date = Date(timeIntervalSince1970: 0)
+
+        #expect(
+            FileNaming.generateFileName(for: .screenshot, format: .png, date: date).hasSuffix(".png")
+        )
+        #expect(
+            FileNaming.generateFileName(for: .recording, format: .gif, date: date).hasSuffix(".gif")
+        )
+        #expect(
+            FileNaming.generateFileName(for: .recording, format: .mov, date: date).hasSuffix(".mov")
+        )
+    }
 }

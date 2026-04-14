@@ -1,5 +1,6 @@
 // Packages/SharedKit/Sources/SharedKit/Utilities/FileNaming.swift
 import Foundation
+import UniformTypeIdentifiers
 
 public enum CaptureType: Sendable {
     case screenshot
@@ -12,6 +13,38 @@ public enum FileFormat: String, Sendable {
     case mp4
     case gif
     case mov
+
+    public init?(pathExtension: String) {
+        switch pathExtension.lowercased() {
+        case "png":
+            self = .png
+        case "jpg", "jpeg":
+            self = .jpeg
+        case "mp4":
+            self = .mp4
+        case "gif":
+            self = .gif
+        case "mov":
+            self = .mov
+        default:
+            return nil
+        }
+    }
+
+    public var contentType: UTType {
+        switch self {
+        case .png:
+            return .png
+        case .jpeg:
+            return .jpeg
+        case .mp4:
+            return .mpeg4Movie
+        case .gif:
+            return .gif
+        case .mov:
+            return .quickTimeMovie
+        }
+    }
 }
 
 public enum FileNaming {

@@ -2,9 +2,10 @@
 import AppKit
 import AVFoundation
 import Observation
-import SharedKit
 import CaptureKit
+import ExportKit
 import HistoryKit
+import SharedKit
 
 @MainActor
 @Observable
@@ -226,26 +227,127 @@ final class HistoryCoordinator {
     }
 
     func copyToClipboard(_ entry: HistoryEntry) {
-        guard let image = loadFullImage(for: entry) else { return }
+        guard let sourceURL = fullImageURL(for: entry) else { return }
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
-        let nsImage = NSImage(cgImage: image, size: NSSize(width: image.width, height: image.height))
-        pasteboard.writeObjects([nsImage])
+
+        switch entry.captureMode {
+        case .recording, .gif:
+            pasteboard.writeObjects([sourceURL as NSURL])
+
+        case .area, .fullscreen, .window:
+            guard let nsImage = NSImage(contentsOf: sourceURL) else { return }
+            pasteboard.writeObjects([nsImage])
+        }
     }
 
     func saveToFile(_ entry: HistoryEntry) {
         guard let sourceURL = fullImageURL(for: entry) else { return }
+        let fileFormat = preferredFileFormat(for: entry, sourceURL: sourceURL)
+        let captureType = preferredCaptureType(for: entry)
+
         let panel = NSSavePanel()
-        panel.nameFieldStringValue = "Capso Screenshot.png"
-        panel.allowedContentTypes = [.png]
+        panel.nameFieldStringValue = FileNaming.generateFileName(
+            for: captureType,
+            format: fileFormat,
+            date: entry.createdAt
+        )
+        panel.allowedContentTypes = [fileFormat.contentType]
+        panel.canCreateDirectories = true
+
         if panel.runModal() == .OK, let destURL = panel.url {
-            try? FileManager.default.copyItem(at: sourceURL, to: destURL)
+            let exportQuality = settings.exportQuality
+            Task.detached(priority: .utility) {
+                do {
+                    try await Self.writeHistoryEntry(
+                        from: sourceURL,
+                        to: destURL,
+                        as: fileFormat,
+                        exportQuality: exportQuality
+                    )
+                } catch {
+                    print("Failed to save history entry to file: \(error)")
+                }
+            }
         }
     }
 
     func showInFinder(_ entry: HistoryEntry) {
         guard let url = fullImageURL(for: entry) else { return }
         NSWorkspace.shared.activateFileViewerSelecting([url])
+    }
+
+    private func preferredCaptureType(for entry: HistoryEntry) -> CaptureType {
+        switch entry.captureMode {
+        case .recording, .gif:
+            return .recording
+        case .area, .fullscreen, .window:
+            return .screenshot
+        }
+    }
+
+    private func preferredFileFormat(for entry: HistoryEntry, sourceURL: URL) -> FileFormat {
+        switch entry.captureMode {
+        case .gif:
+            return .gif
+        case .recording:
+            return .mp4
+        case .area, .fullscreen, .window:
+            return FileFormat(pathExtension: sourceURL.pathExtension) ?? .png
+        }
+    }
+
+    private static func writeHistoryEntry(
+        from sourceURL: URL,
+        to destinationURL: URL,
+        as fileFormat: FileFormat,
+        exportQuality: ExportQuality
+    ) async throws {
+        switch fileFormat {
+        case .gif:
+            if FileFormat(pathExtension: sourceURL.pathExtension) == .gif {
+                try copyItemReplacingExisting(from: sourceURL, to: destinationURL)
+            } else {
+                try await exportVideo(from: sourceURL, to: destinationURL, format: .gif, exportQuality: exportQuality)
+            }
+        case .mp4:
+            if FileFormat(pathExtension: sourceURL.pathExtension) == .mp4 {
+                try copyItemReplacingExisting(from: sourceURL, to: destinationURL)
+            } else {
+                try await exportVideo(from: sourceURL, to: destinationURL, format: .mp4, exportQuality: exportQuality)
+            }
+        case .png, .jpeg, .mov:
+            try copyItemReplacingExisting(from: sourceURL, to: destinationURL)
+        }
+    }
+
+    private static func exportVideo(
+        from sourceURL: URL,
+        to destinationURL: URL,
+        format: ExportFormat,
+        exportQuality: ExportQuality
+    ) async throws {
+        try removeExistingItemIfNeeded(at: destinationURL)
+        _ = try await VideoExporter.export(
+            source: sourceURL,
+            options: ExportOptions(
+                format: format,
+                quality: exportQuality,
+                destination: destinationURL
+            )
+        )
+    }
+
+    private static func copyItemReplacingExisting(from sourceURL: URL, to destinationURL: URL) throws {
+        try removeExistingItemIfNeeded(at: destinationURL)
+        try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
+    }
+
+    private static func removeExistingItemIfNeeded(at url: URL) throws {
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: url.path) {
+            try fileManager.removeItem(at: url)
+        }
     }
 
     func runCleanup() {
