@@ -10,13 +10,15 @@ final class MenuBarController: NSObject {
     private let captureCoordinator: CaptureCoordinator
     private let recordingCoordinator: RecordingCoordinator
     private let ocrCoordinator: OCRCoordinator
+    private let historyCoordinator: HistoryCoordinator
     private let onShowPreferences: () -> Void
 
-    init(settings: AppSettings, captureCoordinator: CaptureCoordinator, recordingCoordinator: RecordingCoordinator, ocrCoordinator: OCRCoordinator, onShowPreferences: @escaping () -> Void) {
+    init(settings: AppSettings, captureCoordinator: CaptureCoordinator, recordingCoordinator: RecordingCoordinator, ocrCoordinator: OCRCoordinator, historyCoordinator: HistoryCoordinator, onShowPreferences: @escaping () -> Void) {
         self.settings = settings
         self.captureCoordinator = captureCoordinator
         self.recordingCoordinator = recordingCoordinator
         self.ocrCoordinator = ocrCoordinator
+        self.historyCoordinator = historyCoordinator
         self.onShowPreferences = onShowPreferences
         super.init()
         setupStatusItem()
@@ -66,12 +68,8 @@ final class MenuBarController: NSObject {
 
         menu.addItem(.separator())
 
-        // TODO: Re-enable "Capture History..." once the history feature is
-        // implemented. The `openHistory()` handler below is currently an
-        // empty stub (Phase 2), so showing the menu item just gives users a
-        // dead click. Uncomment the two lines below when history lands.
-        // menu.addItem(menuItem("Capture History...", action: #selector(openHistory)))
-        // menu.addItem(.separator())
+        menu.addItem(menuItem(String(localized: "Screenshot History..."), action: #selector(openHistory)))
+        menu.addItem(.separator())
 
         menu.addItem(menuItem(String(localized: "Preferences..."), action: #selector(openPreferences), key: ",", modifiers: [.command]))
         menu.addItem(menuItem(String(localized: "About Capso"), action: #selector(openAbout)))
@@ -112,10 +110,9 @@ final class MenuBarController: NSObject {
         recordingCoordinator.startRecordingFlow()
     }
 
-    // TODO: Implement Capture History (Phase 2). Keep this stub so the
-    // commented-out menu item in `buildMenu()` can be wired back in with a
-    // single-line uncomment once the feature is ready.
-    @objc private func openHistory() {}
+    @objc private func openHistory() {
+        historyCoordinator.showWindow()
+    }
 
     @objc private func openPreferences() {
         onShowPreferences()

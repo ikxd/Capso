@@ -344,6 +344,31 @@ final class PreferencesViewModel {
     }
 
     // MARK: Version
+    // MARK: History
+    var historyEnabled: Bool {
+        get {
+            access(keyPath: \.historyEnabled)
+            return settings.historyEnabled
+        }
+        set {
+            withMutation(keyPath: \.historyEnabled) {
+                settings.historyEnabled = newValue
+            }
+        }
+    }
+
+    var historyRetention: String {
+        get {
+            access(keyPath: \.historyRetention)
+            return settings.historyRetention
+        }
+        set {
+            withMutation(keyPath: \.historyRetention) {
+                settings.historyRetention = newValue
+            }
+        }
+    }
+
     var appVersion: String {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"

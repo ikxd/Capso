@@ -12,6 +12,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private(set) var captureCoordinator: CaptureCoordinator?
     private(set) var recordingCoordinator: RecordingCoordinator?
     private(set) var ocrCoordinator: OCRCoordinator?
+    private(set) var historyCoordinator: HistoryCoordinator?
     private var preferencesWindow: PreferencesWindow?
     /// Sparkle update coordinator used by preferences and manual update checks.
     let updateManager = UpdateManager()
@@ -25,16 +26,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         captureCoordinator = CaptureCoordinator(settings: settings)
         recordingCoordinator = RecordingCoordinator(settings: settings)
         ocrCoordinator = OCRCoordinator(settings: settings)
+        historyCoordinator = HistoryCoordinator(settings: settings)
         captureCoordinator!.ocrCoordinator = ocrCoordinator
+        captureCoordinator!.historyCoordinator = historyCoordinator
+        recordingCoordinator!.historyCoordinator = historyCoordinator
         preferencesWindow = PreferencesWindow(settings: settings, updateManager: updateManager)
         menuBarController = MenuBarController(
             settings: settings,
             captureCoordinator: captureCoordinator!,
             recordingCoordinator: recordingCoordinator!,
             ocrCoordinator: ocrCoordinator!,
+            historyCoordinator: historyCoordinator!,
             onShowPreferences: { [weak self] in self?.showPreferences() }
         )
         registerGlobalShortcuts()
+        historyCoordinator?.runCleanup()
         Task {
             await permissionManager.checkScreenRecordingPermission()
             // Request camera permission early so the system dialog

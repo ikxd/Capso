@@ -15,6 +15,7 @@ public struct CaptureResult: Sendable {
     public let captureRect: CGRect
     public let windowName: String?
     public let appName: String?
+    public let appBundleIdentifier: String?
     public let timestamp: Date
     /// The display where this capture originated.
     public let displayID: CGDirectDisplayID
@@ -25,6 +26,7 @@ public struct CaptureResult: Sendable {
         captureRect: CGRect,
         windowName: String? = nil,
         appName: String? = nil,
+        appBundleIdentifier: String? = nil,
         timestamp: Date = Date(),
         displayID: CGDirectDisplayID = CGMainDisplayID()
     ) {
@@ -33,6 +35,7 @@ public struct CaptureResult: Sendable {
         self.captureRect = captureRect
         self.windowName = windowName
         self.appName = appName
+        self.appBundleIdentifier = appBundleIdentifier
         self.timestamp = timestamp
         self.displayID = displayID
     }

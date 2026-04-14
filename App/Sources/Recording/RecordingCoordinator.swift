@@ -1,6 +1,7 @@
 // App/Sources/Recording/RecordingCoordinator.swift
 import AppKit
 import Observation
+import HistoryKit
 import RecordingKit
 import CameraKit
 import CaptureKit
@@ -20,6 +21,7 @@ final class RecordingCoordinator {
     private let settings: AppSettings
     let recorder = ScreenRecorder()
     let cameraManager = CameraManager()
+    var historyCoordinator: HistoryCoordinator?
 
     private var overlayWindows: [CaptureOverlayWindow] = []
     private var toolbarWindow: RecordingToolbarWindow?
@@ -370,8 +372,11 @@ final class RecordingCoordinator {
                 let result = try await recorder.stopRecording()
                 hideRecordingUI()
 
-                // Keep file in temp — only move to desktop on Save
                 let tempURL = result.fileURL
+
+                // Save to history immediately (before user decides to Save/discard)
+                let format = result.format as RecordingKit.RecordingFormat
+                saveRecordingToHistory(url: tempURL, format: format)
 
                 // Extract thumbnail and show preview
                 let thumbnail = await VideoThumbnail.extractThumbnail(from: tempURL)
@@ -649,5 +654,11 @@ final class RecordingCoordinator {
         cameraPiPWindow?.close()
         cameraPiPWindow = nil
         cameraManager.stop()
+    }
+
+    private func saveRecordingToHistory(url: URL, format: RecordingKit.RecordingFormat) {
+        guard let historyCoordinator else { return }
+        let mode: HistoryCaptureMode = format == .gif ? .gif : .recording
+        historyCoordinator.saveRecording(url: url, mode: mode)
     }
 }

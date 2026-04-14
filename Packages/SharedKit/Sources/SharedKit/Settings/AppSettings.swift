@@ -226,6 +226,18 @@ public final class AppSettings: @unchecked Sendable {
         set { defaults.set(newValue, forKey: "rememberLastCaptureArea") }
     }
 
+    // MARK: History
+    public var historyEnabled: Bool {
+        get { defaults.object(forKey: "historyEnabled") as? Bool ?? true }
+        set { defaults.set(newValue, forKey: "historyEnabled") }
+    }
+
+    /// Raw string value matching HistoryRetention enum in HistoryKit.
+    public var historyRetention: String {
+        get { defaults.string(forKey: "historyRetention") ?? "oneMonth" }
+        set { defaults.set(newValue, forKey: "historyRetention") }
+    }
+
     // MARK: OCR
     public var ocrKeepLineBreaks: Bool {
         get { defaults.object(forKey: "ocrKeepLineBreaks") as? Bool ?? true }

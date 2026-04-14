@@ -30,6 +30,7 @@ final class CaptureCoordinator {
 
     var lastCaptureResult: CaptureResult?
     var ocrCoordinator: OCRCoordinator?
+    var historyCoordinator: HistoryCoordinator?
 
     /// Post-capture action override. When set, ignores Settings toggles.
     private var pendingAction: PostCaptureAction = .default
@@ -252,6 +253,7 @@ final class CaptureCoordinator {
                             captureRect: result.captureRect,
                             windowName: result.windowName,
                             appName: result.appName,
+                            appBundleIdentifier: result.appBundleIdentifier,
                             timestamp: result.timestamp,
                             displayID: result.displayID
                         )
@@ -545,6 +547,7 @@ final class CaptureCoordinator {
                 showQuickAccess(for: result)
             }
         }
+        historyCoordinator?.saveCapture(result: result)
     }
 
     /// The real camera-shutter sound macOS itself plays for Cmd+Shift+3/4.

@@ -51,6 +51,25 @@ struct GeneralSettingsView: View {
                 }
             }
 
+            SettingGroup(title: "History") {
+                SettingCard {
+                    SettingRow(label: "Save to History", sublabel: "Automatically save all captures") {
+                        Toggle("", isOn: $viewModel.historyEnabled)
+                            .toggleStyle(.switch)
+                            .controlSize(.small)
+                    }
+                    SettingRow(label: "Keep History", sublabel: "Auto-delete older captures", showDivider: true) {
+                        Picker("", selection: $viewModel.historyRetention) {
+                            Text("1 Week").tag("oneWeek")
+                            Text("2 Weeks").tag("twoWeeks")
+                            Text("1 Month").tag("oneMonth")
+                            Text("Unlimited").tag("unlimited")
+                        }
+                        .frame(width: 130)
+                    }
+                }
+            }
+
             SettingGroup(title: "About") {
                 SettingCard {
                     SettingRow(label: "Version") {

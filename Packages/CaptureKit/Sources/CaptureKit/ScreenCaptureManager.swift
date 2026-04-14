@@ -107,6 +107,7 @@ public enum ScreenCaptureManager {
             captureRect: scWindow.frame,
             windowName: scWindow.title,
             appName: scWindow.owningApplication?.applicationName,
+            appBundleIdentifier: scWindow.owningApplication?.bundleIdentifier,
             displayID: display.displayID
         )
     }

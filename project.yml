@@ -37,6 +37,8 @@ packages:
     path: Packages/ExportKit
   EffectsKit:
     path: Packages/EffectsKit
+  HistoryKit:
+    path: Packages/HistoryKit
   KeyboardShortcuts:
     url: https://github.com/sindresorhus/KeyboardShortcuts
     exactVersion: "2.2.1"
@@ -76,6 +78,7 @@ targets:
       - package: OCRKit
       - package: ExportKit
       - package: EffectsKit
+      - package: HistoryKit
       - package: KeyboardShortcuts
       - package: Defaults
       - package: LaunchAtLogin
