@@ -17,7 +17,7 @@ final class CaptureOverlayView: NSView {
     private var isDragging = false
     private var dragStart: NSPoint = .zero
     private var dragEnd: NSPoint = .zero
-    private var currentMouseLocation: NSPoint = .zero
+    private var currentMouseLocation: NSPoint?
 
     // Window selection state
     private var hoveredWindowID: CGWindowID?
@@ -63,7 +63,16 @@ final class CaptureOverlayView: NSView {
         dragStart = .zero
         dragEnd = .zero
         hoveredWindowID = nil
+        currentMouseLocation = nil
         needsDisplay = true
+    }
+
+    /// Prepare the overlay after the window is on-screen and key so the
+    /// cursor/reticle are initialized from the current mouse position instead
+    /// of waiting for the first mouse-moved event.
+    func prepareForPresentation() {
+        syncCurrentMouseLocation()
+
         // Only hide cursor in area mode — we draw our own crosshair reticle.
         // In window selection mode, keep the normal cursor visible so
         // the user can see where they're pointing.
@@ -75,6 +84,10 @@ final class CaptureOverlayView: NSView {
         } else {
             restoreCursorIfNeeded()
         }
+
+        window?.invalidateCursorRects(for: self)
+        needsDisplay = true
+        displayIfNeeded()
     }
 
     /// Restore cursor if hidden — safe to call multiple times
@@ -87,6 +100,26 @@ final class CaptureOverlayView: NSView {
 
     private func restoreCursor() {
         restoreCursorIfNeeded()
+    }
+
+    /// Seed the reticle from the current pointer location so area capture
+    /// starts with the crosshair under the cursor even before the first
+    /// mouse-moved event arrives.
+    private func syncCurrentMouseLocation() {
+        guard let window else {
+            currentMouseLocation = nil
+            return
+        }
+
+        let screenLocation = NSEvent.mouseLocation
+        guard let screenFrame = window.screen?.frame,
+              screenFrame.contains(screenLocation) else {
+            currentMouseLocation = nil
+            return
+        }
+
+        let windowPoint = window.convertPoint(fromScreen: screenLocation)
+        currentMouseLocation = convert(windowPoint, from: nil)
     }
 
     func setMode(_ mode: CaptureOverlayMode) {
@@ -151,11 +184,15 @@ final class CaptureOverlayView: NSView {
             context.restoreGState()
 
             drawDimensionLabel(for: selectionRect, in: context)
-            drawReticle(at: currentMouseLocation, in: context)
+            if let currentMouseLocation {
+                drawReticle(at: currentMouseLocation, in: context)
+            }
         } else {
             // Before dragging: fully transparent, just crosshair
-            drawReticle(at: currentMouseLocation, in: context)
-            drawCoordinateLabel(at: currentMouseLocation, in: context)
+            if let currentMouseLocation {
+                drawReticle(at: currentMouseLocation, in: context)
+                drawCoordinateLabel(at: currentMouseLocation, in: context)
+            }
         }
     }
 
@@ -265,10 +302,10 @@ final class CaptureOverlayView: NSView {
     }
 
     /// Draw a small crosshair reticle at the cursor position.
-    /// Short arms (~18px) with a gap in the center — no full-screen lines.
+    /// Short arms (~12px) with a gap in the center — no full-screen lines.
     private func drawReticle(at point: NSPoint, in context: CGContext) {
-        let armLength: CGFloat = 20
-        let gap: CGFloat = 4
+        let armLength: CGFloat = 12
+        let gap: CGFloat = 2.5
 
         // Draw each arm with dark outline + white fill for visibility on any background
         let arms: [(CGPoint, CGPoint)] = [
@@ -280,7 +317,7 @@ final class CaptureOverlayView: NSView {
 
         // Dark outline (draw first, thicker)
         context.setStrokeColor(NSColor.black.withAlphaComponent(0.5).cgColor)
-        context.setLineWidth(3.0)
+        context.setLineWidth(2.5)
         for (start, end) in arms {
             context.move(to: start)
             context.addLine(to: end)
@@ -289,7 +326,7 @@ final class CaptureOverlayView: NSView {
 
         // White fill (draw on top, thinner)
         context.setStrokeColor(NSColor.white.cgColor)
-        context.setLineWidth(1.5)
+        context.setLineWidth(1.25)
         for (start, end) in arms {
             context.move(to: start)
             context.addLine(to: end)
@@ -395,14 +432,18 @@ final class CaptureOverlayView: NSView {
         case .area:
             break
         case .windowSelection:
-            let screenPoint = viewPointToScreenPoint(currentMouseLocation)
-            if let window = windowUnderCursor(at: screenPoint) {
-                hoveredWindowID = window.id
-                hoveredWindowFrame = window.frame
-                if window.appName.isEmpty || window.title == window.appName {
-                    hoveredWindowName = window.title
+            if let currentMouseLocation {
+                let screenPoint = viewPointToScreenPoint(currentMouseLocation)
+                if let window = windowUnderCursor(at: screenPoint) {
+                    hoveredWindowID = window.id
+                    hoveredWindowFrame = window.frame
+                    if window.appName.isEmpty || window.title == window.appName {
+                        hoveredWindowName = window.title
+                    } else {
+                        hoveredWindowName = "\(window.appName) — \(window.title)"
+                    }
                 } else {
-                    hoveredWindowName = "\(window.appName) — \(window.title)"
+                    hoveredWindowID = nil
                 }
             } else {
                 hoveredWindowID = nil
@@ -438,8 +479,9 @@ final class CaptureOverlayView: NSView {
 
     private func cancelCurrentSelection() {
         isDragging = false
-        dragStart = currentMouseLocation
-        dragEnd = currentMouseLocation
+        let currentLocation = currentMouseLocation ?? .zero
+        dragStart = currentLocation
+        dragEnd = currentLocation
         needsDisplay = true
     }
 

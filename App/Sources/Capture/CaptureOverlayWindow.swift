@@ -36,7 +36,7 @@ final class CaptureOverlayWindow: NSPanel {
             perform(preventsActivationSel, with: NSNumber(value: true))
         }
 
-        overlayView = CaptureOverlayView(frame: screen.frame)
+        overlayView = CaptureOverlayView(frame: NSRect(origin: .zero, size: screen.frame.size))
         overlayView.onSelectionComplete = { [weak self] rect in
             guard let self, let screen = self.screen else { return }
             self.onAreaSelected?(rect, screen)
@@ -58,11 +58,6 @@ final class CaptureOverlayWindow: NSPanel {
         overlayView.setMode(mode)
         overlayView.resetSelection()
 
-        // Force synchronous render BEFORE showing the window.
-        // This eliminates the flash — the first visible frame already
-        // has the frozen image + dark overlay drawn.
-        overlayView.displayIfNeeded()
-
         // Show the window. Non-activating panel won't activate our app.
         orderFrontRegardless()
 
@@ -70,6 +65,11 @@ final class CaptureOverlayWindow: NSPanel {
         // On a .nonactivatingPanel, makeKey() does NOT activate the app.
         makeKey()
         makeFirstResponder(overlayView)
+
+        // Prime the reticle/cursor only after the window is visible and key.
+        // Doing this earlier can leave the first frame using a stale or zero
+        // cursor position until the user moves the mouse.
+        overlayView.prepareForPresentation()
 
         // Also install global ESC monitor as fallback
         // (in case the window doesn't receive key events)
