@@ -119,6 +119,7 @@ final class MenuBarController: NSObject {
     }
 
     @objc private func openAbout() {
+        NSApp.activate()
         NSApp.orderFrontStandardAboutPanel(nil)
     }
 
