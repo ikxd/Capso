@@ -243,6 +243,19 @@ The license auto-converts to Apache 2.0 three years after each release — so ev
 
 - [Report a bug](https://github.com/lzhgus/Capso/issues/new?template=bug_report.yml)
 - [Request a feature](https://github.com/lzhgus/Capso/issues/new?template=feature_request.yml)
-- [GitHub Sponsors](https://github.com/sponsors/lzhgus) — if Capso is useful to you, consider supporting development
 
-Built by [Awesome Mac Apps](https://www.awesomemacapp.com/) — check out our other macOS tools.
+If Capso saves you time, a small tip keeps it growing — every bit funds more polish, more features, fewer bugs.
+
+<p align="center">
+  <a href="https://github.com/sponsors/lzhgus">
+    <img src="https://img.shields.io/badge/GitHub%20Sponsors-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="Sponsor on GitHub" />
+  </a>
+  &nbsp;
+  <a href="https://buymeacoffee.com/lzhgus">
+    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" />
+  </a>
+</p>
+
+<p align="center">
+  Built by <a href="https://www.awesomemacapp.com/">Awesome Mac Apps</a> — check out our other macOS tools.
+</p>

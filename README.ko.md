@@ -243,6 +243,19 @@ Capso는 [Business Source License 1.1](LICENSE) 로 배포됩니다.
 
 - [버그 신고](https://github.com/lzhgus/Capso/issues/new?template=bug_report.yml)
 - [기능 요청](https://github.com/lzhgus/Capso/issues/new?template=feature_request.yml)
-- [GitHub Sponsors](https://github.com/sponsors/lzhgus) — Capso가 도움이 되었다면 개발 후원을 고려해 주세요
 
-[Awesome Mac Apps](https://www.awesomemacapp.com/) 에서 만들었습니다. 다른 macOS 도구도 확인해 보세요.
+Capso가 시간을 아껴줬다면, 작은 후원이 개발의 큰 힘이 됩니다 — 더 많은 다듬음, 더 많은 기능, 더 적은 버그로 이어집니다.
+
+<p align="center">
+  <a href="https://github.com/sponsors/lzhgus">
+    <img src="https://img.shields.io/badge/GitHub%20Sponsors-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="Sponsor on GitHub" />
+  </a>
+  &nbsp;
+  <a href="https://buymeacoffee.com/lzhgus">
+    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://www.awesomemacapp.com/">Awesome Mac Apps</a> 에서 만들었습니다. 다른 macOS 도구도 확인해 보세요.
+</p>

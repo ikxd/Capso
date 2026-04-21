@@ -247,6 +247,19 @@ Capso 采用 [Business Source License 1.1](LICENSE) 许可。
 
 - [报告 Bug](https://github.com/lzhgus/Capso/issues/new?template=bug_report.yml)
 - [功能建议](https://github.com/lzhgus/Capso/issues/new?template=feature_request.yml)
-- [GitHub Sponsors](https://github.com/sponsors/lzhgus)：如果 Capso 对你有帮助，一杯咖啡的支持就是最大的鼓励
 
-由 [Awesome Mac Apps](https://www.awesomemacapp.com/) 出品，欢迎了解我们的其他 macOS 工具。
+如果 Capso 为你节省了时间，一点小小的支持就能让它持续打磨 — 更多细节，更多功能，更少 Bug。
+
+<p align="center">
+  <a href="https://github.com/sponsors/lzhgus">
+    <img src="https://img.shields.io/badge/GitHub%20Sponsors-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="Sponsor on GitHub" />
+  </a>
+  &nbsp;
+  <a href="https://buymeacoffee.com/lzhgus">
+    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" />
+  </a>
+</p>
+
+<p align="center">
+  由 <a href="https://www.awesomemacapp.com/">Awesome Mac Apps</a> 出品，欢迎了解我们的其他 macOS 工具。
+</p>
