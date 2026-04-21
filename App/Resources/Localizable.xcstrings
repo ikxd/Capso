@@ -4765,6 +4765,94 @@
         "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "截图和录屏记录将显示在这里" } }
       }
     },
+    "Report a Bug" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "バグを報告" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "버그 신고" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "报告 Bug" } }
+      }
+    },
+    "Found something broken?" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "不具合を見つけましたか？" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "문제를 발견하셨나요?" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "发现问题了吗？" } }
+      }
+    },
+    "Request a Feature" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "機能をリクエスト" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "기능 요청" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "请求新功能" } }
+      }
+    },
+    "Have an idea?" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "アイデアがありますか？" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "좋은 아이디어가 있으신가요?" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "有什么想法？" } }
+      }
+    },
+    "Source Code" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ソースコード" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "소스 코드" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "源代码" } }
+      }
+    },
+    "View on GitHub" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "GitHub で表示" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "GitHub에서 보기" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "在 GitHub 上查看" } }
+      }
+    },
+    "Report" : {
+      "comment" : "Button label in About → Report a Bug row. Opens the bug report issue template.",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "報告" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "신고" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "报告" } }
+      }
+    },
+    "Request" : {
+      "comment" : "Button label in About → Request a Feature row. Opens the feature request issue template.",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "リクエスト" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "요청" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "请求" } }
+      }
+    },
+    "Open" : {
+      "comment" : "Button label in About → Source Code row. Opens the GitHub repository in the browser.",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "開く" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "열기" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "打开" } }
+      }
+    },
+    "Screenshot History..." : {
+      "comment" : "Menu bar item that opens the screenshot history window. The ellipsis follows macOS convention for items that open a window.",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "スクリーンショット履歴..." } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "스크린샷 기록..." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "截图历史..." } }
+      }
+    },
+    "Open Editor After Recording" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "録画後にエディタを開く" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "녹화 후 편집기 열기" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "录制后打开编辑器" } }
+      }
+    },
+    "Edit, trim, and add effects before exporting" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "書き出す前に編集・トリミング・エフェクトを追加" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "내보내기 전에 편집, 자르기 및 효과 추가" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "导出前编辑、裁剪并添加特效" } }
+      }
+    },
     "Show Menu Bar Icon" : {
       "localizations" : {
         "ja" : { "stringUnit" : { "state" : "translated", "value" : "メニューバーアイコンを表示" } },
