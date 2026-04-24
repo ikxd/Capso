@@ -18,6 +18,11 @@ final class UpdateManager: NSObject, ObservableObject {
 
     @Published private(set) var canCheckForUpdates = false
     @Published private(set) var status: Status?
+    @Published var automaticallyDownloadsUpdates: Bool = false {
+        didSet {
+            updater.automaticallyDownloadsUpdates = automaticallyDownloadsUpdates
+        }
+    }
 
     private enum ManualCheckState {
         case none
@@ -26,7 +31,8 @@ final class UpdateManager: NSObject, ObservableObject {
 
     private var manualCheckState: ManualCheckState = .none
     private var probeFoundValidUpdate = false
-    private var observation: NSKeyValueObservation?
+    private var canCheckObservation: NSKeyValueObservation?
+    private var autoDownloadObservation: NSKeyValueObservation?
     private var clearStatusTask: Task<Void, Never>?
 
     lazy var updaterController = SPUStandardUpdaterController(
@@ -39,9 +45,15 @@ final class UpdateManager: NSObject, ObservableObject {
 
     override init() {
         super.init()
-        observation = updater.observe(\.canCheckForUpdates, options: [.initial, .new]) { [weak self] updater, _ in
+        automaticallyDownloadsUpdates = updater.automaticallyDownloadsUpdates
+        canCheckObservation = updater.observe(\.canCheckForUpdates, options: [.initial, .new]) { [weak self] updater, _ in
             Task { @MainActor in
                 self?.canCheckForUpdates = updater.canCheckForUpdates
+            }
+        }
+        autoDownloadObservation = updater.observe(\.automaticallyDownloadsUpdates, options: [.new]) { [weak self] updater, _ in
+            Task { @MainActor in
+                self?.automaticallyDownloadsUpdates = updater.automaticallyDownloadsUpdates
             }
         }
     }
