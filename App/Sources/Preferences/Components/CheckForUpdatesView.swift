@@ -20,6 +20,7 @@ final class UpdateManager: NSObject, ObservableObject {
     @Published private(set) var status: Status?
     @Published var automaticallyDownloadsUpdates: Bool = false {
         didSet {
+            guard oldValue != automaticallyDownloadsUpdates else { return }
             updater.automaticallyDownloadsUpdates = automaticallyDownloadsUpdates
         }
     }
